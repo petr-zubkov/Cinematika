@@ -965,6 +965,117 @@ router.all('/', function(req, res) {
   );
 });
 
+// API endpoints for movie filtering
+router.get('/genres', function(req, res) {
+  var fs = require('fs');
+  var path = require('path');
+  
+  var genreFile = path.join(__dirname, '..', 'files', 'genre.json');
+  
+  fs.access(genreFile, function(err) {
+    if (!err) {
+      var genres = require(genreFile);
+      return res.json(genres.map((genre, index) => ({
+        id: index,
+        name: genre.name || genre
+      })));
+    }
+    
+    // If file doesn't exist, get from database
+    var CP_get = require('../lib/CP_get');
+    var config = require('../config/production/config');
+    Object.keys(config).length === 0 &&
+      (config = require('../config/production/config.backup'));
+    
+    CP_get.movies({ genre: '!_empty' }, -2, 'kinopoisk-vote-up', 1, false, {
+      protocol: config.protocol,
+      domain: config.subdomain + '' + config.domain,
+      origin: config.protocol + '' + config.subdomain + '' + config.domain
+    }, function(err, movies) {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to load genres' });
+      }
+      
+      // Extract unique genres
+      var genres = {};
+      movies.forEach(function(movie) {
+        if (movie.genre) {
+          movie.genre.split(',').forEach(function(genre) {
+            genre = genre.trim();
+            if (genre) {
+              genres[genre] = true;
+            }
+          });
+        }
+      });
+      
+      var genreList = Object.keys(genres).map(function(genre, index) {
+        return {
+          id: index,
+          name: genre
+        };
+      });
+      
+      res.json(genreList);
+    });
+  });
+});
+
+router.get('/countries', function(req, res) {
+  var fs = require('fs');
+  var path = require('path');
+  
+  var countryFile = path.join(__dirname, '..', 'files', 'country.json');
+  
+  fs.access(countryFile, function(err) {
+    if (!err) {
+      var countries = require(countryFile);
+      return res.json(countries.map((country, index) => ({
+        id: index,
+        name: country.name || country
+      })));
+    }
+    
+    // If file doesn't exist, get from database
+    var CP_get = require('../lib/CP_get');
+    var config = require('../config/production/config');
+    Object.keys(config).length === 0 &&
+      (config = require('../config/production/config.backup'));
+    
+    CP_get.movies({ country: '!_empty' }, -2, 'kinopoisk-vote-up', 1, false, {
+      protocol: config.protocol,
+      domain: config.subdomain + '' + config.domain,
+      origin: config.protocol + '' + config.subdomain + '' + config.domain
+    }, function(err, movies) {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to load countries' });
+      }
+      
+      // Extract unique countries
+      var countries = {};
+      movies.forEach(function(movie) {
+        if (movie.country) {
+          movie.country.split(',').forEach(function(country) {
+            country = country.trim();
+            if (country) {
+              countries[country] = true;
+            }
+          });
+        }
+      });
+      
+      var countryList = Object.keys(countries).map(function(country, index) {
+        return {
+          id: index,
+          name: country
+        };
+      });
+      
+      res.json(countryList);
+    });
+  });
+});
+
 function getIp(req) {
   var ips = req.ips || [];
   var ip = '';
