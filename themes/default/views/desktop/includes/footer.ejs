@@ -1,0 +1,77 @@
+<div class="clear"></div>
+
+<% if (typeof page.adv === 'object' && page.adv.bottom) { %>
+    <div style="text-align: center; margin: 10px auto;">
+        <%- page.adv.bottom %>
+    </div>
+    <div class="clear"></div>
+<% } %>
+
+<% if (typeof page.adv === 'object' && page.adv.brand) { %>
+    <%- page.adv.brand %>
+<% } %>
+
+</div>
+
+<% if (typeof page.js === 'object') { %>
+    <% page.js.forEach(function (script) { %>
+        <script><%- script %></script>
+    <% }); %>
+<% } %>
+
+<% if (modules.comments.status && typeof comments === 'object' && typeof comments.config === 'object') { %>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var commentUrl = '<%= page.protocol %><%- page.domain %><%- page.url %>';
+            var commentElements = document.querySelectorAll('.cinemapress-comment-form-bg, .cinemapress-comment-button-bg');
+            
+            commentElements.forEach(function(element) {
+                element.addEventListener('click', function() {
+                    var form = document.querySelector('.cinemapress-comment-form');
+                    var textarea = document.querySelector('.cinemapress-comment-textarea');
+                    var anonymous = document.querySelector('.cinemapress-comment-form-anonymous');
+                    var text = textarea.value.trim();
+                    var anonymousName = anonymous.value.trim();
+                    
+                    if (!text) {
+                        alert('<%- page.l.commentRequired || 'Comment is required' %>');
+                        return;
+                    }
+                    
+                    if (!anonymousName) {
+                        alert('<%- page.l.nameRequired || 'Name is required' %>');
+                        return;
+                    }
+                    
+                    var formData = new FormData();
+                    formData.append('comment_url', commentUrl);
+                    formData.append('comment_text', text);
+                    formData.append('comment_anonymous', anonymousName);
+                    formData.append('movie_id', '<%= page.movie ? page.movie.id : '' %>');
+                    
+                    fetch('/api/comments', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('<%- page.l.commentSuccess || 'Comment posted successfully' %>');
+                            textarea.value = '';
+                            location.reload();
+                        } else {
+                            alert(data.message || '<%- page.l.commentError || 'Error posting comment' %>');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('<%- page.l.commentError || 'Error posting comment' %>');
+                    });
+                });
+            });
+        });
+    </script>
+<% } %>
+
+</body>
+</html>

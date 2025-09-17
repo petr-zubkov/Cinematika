@@ -1,0 +1,273 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="<%- page.robots %>">
+<meta name="description" content="<%- page.description %>">
+<meta name="keywords" content="<%- page.keywords %>">
+
+<title><%- page.title %></title>
+
+<link rel="canonical" href="<%- page.protocol %><%- page.domain %><%- page.url %>">
+
+<% if (typeof page.prev === 'object') { %>
+    <link rel="prev" href="<%- page.prev.link %>">
+<% } %>
+<% if (typeof page.next === 'object') { %>
+    <link rel="next" href="<%- page.next.link %>">
+<% } %>
+
+<link rel="alternate" hreflang="x-default" href="<%- page.protocol %><%- page.domain %><%- page.url %>">
+<% if (typeof page.alternate === 'object') { %>
+    <% for (var lang in page.alternate) { %>
+        <link rel="alternate" hreflang="<%- lang %>" href="<%- page.alternate[lang] %>">
+    <% } %>
+<% } %>
+
+<link rel="search" type="application/opensearchdescription+xml" href="<%- page.protocol %><%- page.domain %>/opensearch.xml" title="<%- page.title %>">
+
+<% if (page.favicon) { %>
+    <link rel="icon" type="image/png" href="<%- page.favicon %>">
+    <link rel="apple-touch-icon" href="<%- page.favicon %>">
+<% } %>
+
+<link rel="stylesheet" href="/themes/default/public/desktop/css/all.min.css?v=<%- page.ver %>">
+
+<style>
+    /* Basic desktop styles */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #1a1a1a;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+    
+    .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .logo {
+        height: 40px;
+        margin: 10px 0;
+    }
+    
+    .clear {
+        clear: both;
+    }
+    
+    .poster {
+        float: left;
+        margin: 0 15px 15px 0;
+        position: relative;
+    }
+    
+    .poster img {
+        width: 120px;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    h1, h2, h3 {
+        color: #fff;
+        margin: 20px 0 10px 0;
+    }
+    
+    .info {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #ccc;
+    }
+    
+    .description {
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #bbb;
+    }
+    
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.9);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 16px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+    
+    form {
+        margin: 20px 0;
+        display: flex;
+        gap: 10px;
+    }
+    
+    form input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #333;
+        background: #2a2a2a;
+        color: #fff;
+        border-radius: 4px;
+    }
+    
+    form input[type="submit"], form input[type="button"] {
+        padding: 10px 20px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .pagination {
+        margin: 20px 0;
+        text-align: center;
+    }
+    
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        margin: 0 2px;
+        background: #333;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    
+    .pagination a:hover {
+        background: #555;
+    }
+    
+    .pagination strong span {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #4CAF50;
+        color: white;
+        border-radius: 4px;
+    }
+    
+    .dots {
+        display: inline-block;
+        padding: 8px 4px;
+        color: #888;
+    }
+    
+    /* Rating stars */
+    .star-true, .star-false {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 2px;
+    }
+    
+    .logo-kp, .logo-imdb {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    
+    .randomMovieIndex, .randomMovieMenu {
+        float: right;
+        margin: 10px 0;
+    }
+    
+    .cinemapress-random-index, .cinemapress-random-menu a {
+        display: inline-block;
+        padding: 5px 10px;
+        background: #333;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+    
+    .cinemapress-random-index:hover, .cinemapress-random-menu a:hover {
+        background: #555;
+    }
+    
+    .cinemapress-random-index img, .cinemapress-random-menu img {
+        width: 12px;
+        height: 12px;
+        vertical-align: middle;
+    }
+    
+    .block {
+        background: rgba(255,255,255,0.05);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+    }
+    
+    .moreEpisodes {
+        cursor: pointer;
+        color: #4CAF50;
+        margin: 10px 0;
+    }
+    
+    .moreEpisodes:hover {
+        color: #66BB6A;
+    }
+    
+    @media (max-width: 768px) {
+        .content {
+            padding: 10px;
+        }
+        
+        .poster {
+            float: none;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+        
+        .poster img {
+            width: 100px;
+            height: 150px;
+        }
+        
+        form {
+            flex-direction: column;
+        }
+        
+        .sidenav {
+            padding-top: 40px;
+        }
+    }
+</style>
+
+<% if (typeof page.css === 'object') { %>
+    <style>
+        <% page.css.forEach(function (style) { %>
+            <%- style %>
+        <% }); %>
+    </style>
+<% } %>
