@@ -130,12 +130,12 @@ module.exports = {
   "social": {
     "status": false,
     "data": {
-      "vk": "https://github.com/CinemaPress/CinemaPress",
-      "facebook": "https://gitlab.com/CinemaPress/CinemaPress",
-      "twitter": "https://bitbucket.org/CinemaPress/CinemaPress",
-      "telegram": "https://hub.docker.com/r/cinemapress/docker",
-      "instagram": "https://github.com/CinemaPress/CinemaPress",
-      "youtube": "https://www.youtube.com/CinemaPressOrg"
+      "vk": "https://github.com/Cinematika/Cinematika",
+      "facebook": "https://gitlab.com/Cinematika/Cinematika",
+      "twitter": "https://bitbucket.org/Cinematika/Cinematika",
+      "telegram": "https://hub.docker.com/r/Cinematika/docker",
+      "instagram": "https://github.com/Cinematika/Cinematika",
+      "youtube": "https://www.youtube.com/CinematikaOrg"
     }
   },
   "related": {
