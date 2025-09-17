@@ -166,22 +166,22 @@ function codePlayer(type, movie, options) {
       if (/\.(mp4)$/i.test(movie.player)) {
         code.player =
           '<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>' +
-          '<video id="cinemapress-cdn"><source src="' +
+          '<video id="Cinematika-cdn"><source src="' +
           movie.player +
           '" type="video/mp4"/></video>';
         code.footer =
-          '<script>var cinemapress_player = fluidPlayer("cinemapress-cdn");</script>';
+          '<script>var Cinematika_player = fluidPlayer("Cinematika-cdn");</script>';
       } else if (/\.(m3u8)$/i.test(movie.player)) {
         code.player =
           '<script src="/files/playerjs.js"></script>' +
-          '<div id="cinemapress-cdn"></div>';
+          '<div id="Cinematika-cdn"></div>';
         code.footer =
-          '<script>var cinemapress_player = new Playerjs({id:"cinemapress-cdn", file:"' +
+          '<script>var Cinematika_player = new Playerjs({id:"Cinematika-cdn", file:"' +
           movie.player +
           '"});</script>';
       } else if (/^[^\n,]*$/.test(movie.player)) {
         code.player =
-          '<iframe id="cinemapress-cdn" src="' +
+          '<iframe id="Cinematika-cdn" src="' +
           movie.player.replace(/^.*?(http|\/\/)(.*$)/i, '$1$2') +
           '" frameborder="0" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen"></iframe>';
       }
@@ -474,22 +474,22 @@ function codePlayer(type, movie, options) {
       code.player =
         '' +
         '<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>' +
-        '<video id="cinemapress-cdn"><source src="' +
+        '<video id="Cinematika-cdn"><source src="' +
         movie.player +
         '" type="video/mp4"/></video>';
       code.footer =
         '' +
-        '<script>var cinemapress_player = fluidPlayer("cinemapress-cdn");</script>';
+        '<script>var Cinematika_player = fluidPlayer("Cinematika-cdn");</script>';
     } else if (movie.player && /\.(m3u8)$/.test(movie.player)) {
       code.player =
         '' +
         '<script src="/files/playerjs.js"></script>' +
-        '<video id="cinemapress-cdn"><source src="' +
+        '<video id="Cinematika-cdn"><source src="' +
         movie.player +
         '" type="application/x-mpegURL"/></video>';
       code.footer =
         '' +
-        '<script>var cinemapress_player = new Playerjs({replace:"video"});</script>';
+        '<script>var Cinematika_player = new Playerjs({replace:"video"});</script>';
     } else {
       var param = {};
 

@@ -94,20 +94,20 @@ function blockingPlayer(code, movie, options, display) {
       '    <a href="#" target="_blank" class="twtr"><img src="/themes/default/public/desktop/img/twtr.svg" alt="Share"></a>' +
       '    <a href="#" target="_blank" class="onkl"><img src="/themes/default/public/desktop/img/onkl.svg" alt="Share"></a>' +
       '    <a href="#" target="_blank" class="pntr"><img src="/themes/default/public/desktop/img/pntr.svg" alt="Share"></a>' +
-      '    <script>!function(){var e=encodeURIComponent(window.location.href.replace(window.location.hash,"")),t=encodeURIComponent(document.title),r=document.querySelector("[data-cinemapress-poster]")?encodeURIComponent(document.querySelector("[data-cinemapress-poster]").dataset.cinemapressPoster):"",o=document.querySelector(".tlgr"),n=document.querySelector(".fcbk"),c=document.querySelector(".vknt"),s=document.querySelector(".twtr"),u=document.querySelector(".onkl"),a=document.querySelector(".pntr");o&&(o.href="https://telegram.me/share/url?url="+e+"&text="+t),n&&(n.href="https://www.facebook.com/sharer/sharer.php?u="+e),c&&(c.href="https://vk.com/share.php?url="+e+"&title="+t),s&&(s.href="https://twitter.com/intent/tweet?url="+e+"&text="+t),u&&(u.href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&service=odnoklassniki&st.shareUrl="+e),a&&(a.href="https://pinterest.com/pin/create/button/?url="+e+"&media="+r);var s=document.getElementById("blockingShare");s.addEventListener("click",function(){setTimeout(function(){var t=document.getElementById("blockingPlayer");t.parentElement.removeChild(t)},10000)});}();</script>' +
+      '    <script>!function(){var e=encodeURIComponent(window.location.href.replace(window.location.hash,"")),t=encodeURIComponent(document.title),r=document.querySelector("[data-Cinematika-poster]")?encodeURIComponent(document.querySelector("[data-Cinematika-poster]").dataset.CinematikaPoster):"",o=document.querySelector(".tlgr"),n=document.querySelector(".fcbk"),c=document.querySelector(".vknt"),s=document.querySelector(".twtr"),u=document.querySelector(".onkl"),a=document.querySelector(".pntr");o&&(o.href="https://telegram.me/share/url?url="+e+"&text="+t),n&&(n.href="https://www.facebook.com/sharer/sharer.php?u="+e),c&&(c.href="https://vk.com/share.php?url="+e+"&title="+t),s&&(s.href="https://twitter.com/intent/tweet?url="+e+"&text="+t),u&&(u.href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&service=odnoklassniki&st.shareUrl="+e),a&&(a.href="https://pinterest.com/pin/create/button/?url="+e+"&media="+r);var s=document.getElementById("blockingShare");s.addEventListener("click",function(){setTimeout(function(){var t=document.getElementById("blockingPlayer");t.parentElement.removeChild(t)},10000)});}();</script>' +
       '    <style>.tlgr img,.fcbk img,.vknt img,.twtr img,.onkl img,.pntr img{width:50px;height:50px;margin:5px;display: inline-block;;opacity:.8}.tlgr img:hover,.fcbk img:hover,.vknt img:hover,.twtr img:hover,.onkl img:hover,.pntr img:hover{opacity:.6}#blockingShare{padding:0;margin:20px auto}#blockingShareDiv{position:absolute;z-index:100001;margin:20px auto;text-align:center;width:100%}</style>' +
       '  </span>' +
       '</div>';
 
     var adblock =
       '<script src="/themes/default/public/desktop/js/prebid-ads.js" charset="utf-8"></script>' +
-      '<script>document.addEventListener("DOMContentLoaded",function(){if(document.getElementById("CinemaPress")){var t=document.getElementById("blockingPlayer");t.parentElement.removeChild(t)}});</script>';
+      '<script>document.addEventListener("DOMContentLoaded",function(){if(document.getElementById("Cinematika")){var t=document.getElementById("blockingPlayer");t.parentElement.removeChild(t)}});</script>';
 
     var sub =
       '<input type="text" placeholder="CP8881160388831744" style="border: 0;padding: 10px;border-radius: 3px;background: #ccc;color: #000; margin: 20px;width: 200px;;opacity:.8" id="subscribeKey"><input type="button" style="border: 0;padding: 10px;border-radius: 3px;background: #000;color: #fff; cursor: pointer;;opacity:.8" value="' +
       config.l.subscribe +
       '" id="subscribe">' +
-      '<script>(function(){var e=document.getElementById("subscribe");e.addEventListener("click",function(){var e=document.getElementById("subscribeKey");e&&e.value&&(setCookieCinemaPress("CP_subscribe",e.value,{expires:29549220,path:"/"}),setTimeout(function(){location.reload(!0)},1e3))})})();</script>';
+      '<script>(function(){var e=document.getElementById("subscribe");e.addEventListener("click",function(){var e=document.getElementById("subscribeKey");e&&e.value&&(setCookieCinematika("CP_subscribe",e.value,{expires:29549220,path:"/"}),setTimeout(function(){location.reload(!0)},1e3))})})();</script>';
 
     var legal =
       CP_text.formatting(
