@@ -1107,7 +1107,7 @@ router.post('/change', function(req, res) {
           configs.modules[form.switch.module].status &&
           form.switch.module === 'ftp'
         ) {
-          exec('/usr/bin/cinemapress container ftp', function(err) {});
+          exec('/usr/bin/Cinematika container ftp', function(err) {});
           setTimeout(function() {
             CP_save.save(configs.modules, 'modules', function(err, result) {
               return err ? callback(err) : callback(null, result);
@@ -1144,7 +1144,7 @@ router.post('/change', function(req, res) {
       movies_cron: function(callback) {
         if (!form.movies_cron) return callback(null, 'Null');
         exec(
-          '(nohup /usr/bin/cinemapress container movies run >> /home/' +
+          '(nohup /usr/bin/Cinematika container movies run >> /home/' +
             config.domain +
             '/log/movies_' +
             new Date().toISOString().split('T')[0] +
@@ -1179,7 +1179,7 @@ router.post('/change', function(req, res) {
       },
       movies_zero_rt: function(callback) {
         if (!form.movies_zero_rt) return callback(null, 'Null');
-        exec('/usr/bin/cinemapress container zero_rt &', function(err) {
+        exec('/usr/bin/Cinematika container zero_rt &', function(err) {
           return callback(null, 'Zero');
         });
       },
@@ -1207,7 +1207,7 @@ router.post('/change', function(req, res) {
         if (!form.config || typeof form.config.protocol === 'undefined')
           return callback(null, 'Null');
         exec(
-          '/usr/bin/cinemapress container protocol "' +
+          '/usr/bin/Cinematika container protocol "' +
             form.config.protocol +
             '"',
           function(err) {
@@ -1315,7 +1315,7 @@ router.post('/change', function(req, res) {
 
 router.post('/upload/:renamed?', function(req, res) {
   var filepath = path.join(__dirname, '..', 'files');
-  var filename = 'CinemaPress.jpg';
+  var filename = 'Cinematika.jpg';
   var fieldname = '';
   var storage = multer.diskStorage({
     destination: function(req, file, cb) {

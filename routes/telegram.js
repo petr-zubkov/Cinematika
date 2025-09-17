@@ -309,7 +309,7 @@ router.get('/script.js', function(req, res) {
       "    var divCinemaModalEqual = document.createElement('span');\n" +
       "    var divCinemaModalRand = document.createElement('input');\n" +
       "    var divCinemaModalSubmit = document.createElement('span');\n" +
-      "    var divCinemapressCommentFormBg = document.createElement('div');\n" +
+      "    var divCinematikaCommentFormBg = document.createElement('div');\n" +
       '\n' +
       "    divCinemaModal.setAttribute('class', 'cinemaModal');\n" +
       "    divCinemaModalContent.setAttribute('class', 'cinemaModal-content');\n" +
@@ -322,7 +322,7 @@ router.get('/script.js', function(req, res) {
       "    divCinemaModalMath.setAttribute('class', 'cinemaModal-math');\n" +
       "    divCinemaModalRand.setAttribute('class', 'cinemaModal-rand');\n" +
       "    divCinemaModalSubmit.setAttribute('class', 'cinemaModal-submit');\n" +
-      "    divCinemapressCommentFormBg.setAttribute('class', 'cinemapress-comment-form-bg');\n" +
+      "    divCinematikaCommentFormBg.setAttribute('class', 'Cinematika-comment-form-bg');\n" +
       '\n' +
       "    divCinemaModalRand.setAttribute('type', 'text');\n" +
       "    divCinemaModalClose.innerHTML = 'X';\n" +
@@ -335,7 +335,7 @@ router.get('/script.js', function(req, res) {
       '    divCinemaModalHeader.appendChild(divCinemaModalName);\n' +
       '\n' +
       '    divCinemaModalBody.appendChild(divCinemaModalMessage);\n' +
-      '    divCinemaModalBody.appendChild(divCinemapressCommentFormBg);\n' +
+      '    divCinemaModalBody.appendChild(divCinematikaCommentFormBg);\n' +
       '\n' +
       '    divCinemaModalFooter.appendChild(divCinemaModalMath);\n' +
       '    divCinemaModalFooter.appendChild(divCinemaModalEqual);\n' +
@@ -517,7 +517,7 @@ module.exports = router;
     <div class="cinemaModal-body">
       <textarea class="cinemaModal-message" placeholder="Ваше сообщение">
       </textarea>
-      <div class="cinemapress-comment-form-bg"></div>
+      <div class="Cinematika-comment-form-bg"></div>
     </div>
     <div class="cinemaModal-footer">
       <span class="cinemaModal-math"></span><span> = </span>
@@ -659,7 +659,7 @@ module.exports = router;
     var divCinemaModalEqual = document.createElement('span');
     var divCinemaModalRand = document.createElement('input');
     var divCinemaModalSubmit = document.createElement('span');
-    var divCinemapressCommentFormBg = document.createElement('div');
+    var divCinematikaCommentFormBg = document.createElement('div');
 
     divCinemaModal.setAttribute('class', 'cinemaModal');
     divCinemaModalContent.setAttribute('class', 'cinemaModal-content');
@@ -672,7 +672,7 @@ module.exports = router;
     divCinemaModalMath.setAttribute('class', 'cinemaModal-math');
     divCinemaModalRand.setAttribute('class', 'cinemaModal-rand');
     divCinemaModalSubmit.setAttribute('class', 'cinemaModal-submit');
-    divCinemapressCommentFormBg.setAttribute('class', 'cinemapress-comment-form-bg');
+    divCinematikaCommentFormBg.setAttribute('class', 'Cinematika-comment-form-bg');
 
     divCinemaModalRand.setAttribute('type', 'text');
     divCinemaModalClose.innerHTML = 'X';
@@ -685,7 +685,7 @@ module.exports = router;
     divCinemaModalHeader.appendChild(divCinemaModalName);
 
     divCinemaModalBody.appendChild(divCinemaModalMessage);
-    divCinemaModalBody.appendChild(divCinemapressCommentFormBg);
+    divCinemaModalBody.appendChild(divCinematikaCommentFormBg);
 
     divCinemaModalFooter.appendChild(divCinemaModalMath);
     divCinemaModalFooter.appendChild(divCinemaModalEqual);
