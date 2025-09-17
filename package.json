@@ -1,20 +1,20 @@
 {
-  "name": "cinemapress",
+  "name": "Cinematika",
   "version": "5.0.0",
-  "description": "CinemaPress - Watch Movies and TV Shows Online Streaming Portal CMS Open Source Script",
+  "description": "Cinematika - Watch Movies and TV Shows Online Streaming Portal CMS Open Source Script",
   "license": "MIT",
-  "author": "CinemaPress",
+  "author": "Cinematika",
   "scripts": {
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CinemaPress/CinemaPress.git"
+    "url": "https://github.com/Cinematika/Cinematika.git"
   },
   "bugs": {
-    "url": "https://github.com/CinemaPress/CinemaPress/issues"
+    "url": "https://github.com/Cinematika/Cinematika/issues"
   },
-  "homepage": "https://github.com/CinemaPress/CinemaPress",
+  "homepage": "https://github.com/Cinematika/Cinematika",
   "dependencies": {
     "pm2": "5.1.2",
     "whois": "2.13.5",

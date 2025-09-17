@@ -63,7 +63,7 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(function(req, res, next) {
-  res.setHeader('X-Powered-By', 'CinemaPress');
+  res.setHeader('X-Powered-By', 'Cinematika');
   next();
 });
 app.use('/ping', function(req, res) {

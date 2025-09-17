@@ -18,9 +18,9 @@ ENV TZ=Europe/Moscow
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-RUN mkdir -p /var/cinemapress
-WORKDIR /var/cinemapress
-COPY package.json /var/cinemapress/package.json
+RUN mkdir -p /var/Cinematika
+WORKDIR /var/Cinematika
+COPY package.json /var/Cinematika/package.json
 RUN set -o pipefail \
     && apk update \
     && apk --no-cache add --virtual .build-dependencies make g++ gcc gtk-doc gobject-introspection expat-dev glib-dev libpng-dev libjpeg-turbo-dev giflib-dev librsvg-dev \
@@ -39,23 +39,23 @@ RUN set -o pipefail \
     && npm cache clean --force \
     && apk del .build-dependencies \
     && rm -rf /var/cache/apk/*
-COPY . /var/cinemapress
+COPY . /var/Cinematika
 RUN set -o pipefail \
     && rm -rf package-lock.json doc .dockerignore .gitignore .prettierignore .prettierrc Dockerfile LICENSE.txt README.md \
-    && dos2unix cinemapress.sh \
-    && cp cinemapress.sh /usr/bin/cinemapress && chmod +x /usr/bin/cinemapress \
+    && dos2unix Cinematika.sh \
+    && cp Cinematika.sh /usr/bin/Cinematika && chmod +x /usr/bin/Cinematika \
     && rm -rf /etc/sphinx && mv config/default/sphinx /etc/sphinx \
     && mv node_modules/mysql node_modules/sphinx \
-    && rm -rf cinemapress.sh \
+    && rm -rf Cinematika.sh \
     && cp -rf themes/default/public/admin/favicon.ico favicon.ico \
     && cp -rf themes/default/public/desktop/img/player$(( ( RANDOM % 7 ) + 1 )).png \
         themes/default/public/desktop/img/player.png \
-    && echo -e "#!/bin/bash\nsleep \$((60 + RANDOM % 60));\n/usr/bin/cinemapress container reindex save >> /home/\${CP_DOMAIN}/log/backup_\$(date '+%d_%m_%Y').log;\nsleep \$((30 + RANDOM % 60));\n/usr/bin/cinemapress container backup create >> /home/\${CP_DOMAIN}/log/backup_\$(date '+%d_%m_%Y').log;\nrm -f /home/\${CP_DOMAIN}/log/cron_movies.pid;\nfind /home/\${CP_DOMAIN}/log -mindepth 1 -mtime +14 -delete;" \
+    && echo -e "#!/bin/bash\nsleep \$((60 + RANDOM % 60));\n/usr/bin/Cinematika container reindex save >> /home/\${CP_DOMAIN}/log/backup_\$(date '+%d_%m_%Y').log;\nsleep \$((30 + RANDOM % 60));\n/usr/bin/Cinematika container backup create >> /home/\${CP_DOMAIN}/log/backup_\$(date '+%d_%m_%Y').log;\nrm -f /home/\${CP_DOMAIN}/log/cron_movies.pid;\nfind /home/\${CP_DOMAIN}/log -mindepth 1 -mtime +14 -delete;" \
         > /etc/periodic/daily/backup \
     && chmod a+x /etc/periodic/daily/backup \
-    && echo -e "#!/bin/bash\nsleep \$((RANDOM % 300));\n/usr/bin/cinemapress container cron >> /home/\${CP_DOMAIN}/log/cron_\$(date '+%d_%m_%Y').log" \
+    && echo -e "#!/bin/bash\nsleep \$((RANDOM % 300));\n/usr/bin/Cinematika container cron >> /home/\${CP_DOMAIN}/log/cron_\$(date '+%d_%m_%Y').log" \
         > /etc/periodic/hourly/cron \
     && chmod a+x /etc/periodic/hourly/cron
 EXPOSE 3000 3306
-CMD ["/usr/bin/cinemapress", "container", "run"]
+CMD ["/usr/bin/Cinematika", "container", "run"]
 HEALTHCHECK --interval=60s --timeout=30s --start-period=30s --retries=10 CMD curl --fail http://localhost:3000/ping || exit 1
