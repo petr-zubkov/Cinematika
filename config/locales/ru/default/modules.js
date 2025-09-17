@@ -64,7 +64,7 @@ module.exports = {
           "excerpt_length": 250,
           "hide_avatars": 0,
           "display": [
-            "index","movie"
+            "index", "movie"
           ]
         }
       }
@@ -130,12 +130,12 @@ module.exports = {
   "social": {
     "status": false,
     "data": {
-      "vk": "https://github.com/CinemaPress/CinemaPress",
-      "facebook": "https://gitlab.com/CinemaPress/CinemaPress",
-      "twitter": "https://bitbucket.org/CinemaPress/CinemaPress",
-      "telegram": "https://hub.docker.com/r/cinemapress/docker",
-      "instagram": "https://github.com/CinemaPress/CinemaPress",
-      "youtube": "https://www.youtube.com/CinemaPressOrg"
+      "vk": "https://github.com/Cinematika/Cinematika",
+      "facebook": "https://gitlab.com/Cinematika/Cinematika",
+      "twitter": "https://bitbucket.org/Cinematika/Cinematika",
+      "telegram": "https://hub.docker.com/r/Cinematika/docker",
+      "instagram": "https://github.com/Cinematika/Cinematika",
+      "youtube": "https://www.youtube.com/CinematikaOrg"
     }
   },
   "related": {
@@ -376,7 +376,7 @@ module.exports = {
         "message": "Поделитесь страницей фильма в одной из социальных сетей."
       },
       "sub": {
-        "keys": ["CP06368342850052267","CP10020891099182505","CP46955642915431706"],
+        "keys": ["CP06368342850052267", "CP10020891099182505", "CP46955642915431706"],
         "message": "Просмотр доступен только по подписке. Приобретите подписку и активируйте ключ. <p style=\"margin:20px auto 0 auto\"><a href=\"https://digiseller.ru/\" target=\"_blank\" style=\"color:white;background:#16494e;border-radius: 5px;padding: 10px;\">Купить подписку</a></p>"
       },
       "adv": {
@@ -715,7 +715,7 @@ module.exports = {
   "random": {
     "status": true,
     "data": {
-      "category": ["year","country","genre","type","content"],
+      "category": ["year", "country", "genre", "type", "content"],
       "menu": "poslednie-obnovleniya-filmov",
       "index": 1,
       "related": 1,
