@@ -1,0 +1,651 @@
+<div class="cinema-filter-container">
+    <div class="cinema-filter-toggle" onclick="toggleFilter()">
+        <img src="/themes/default/public/mobile/dice.svg" alt="<%- page.l.filter %>" style="width: 16px; margin-right: 5px;">
+        <span><%- page.l.filter || 'Filter' %></span>
+        <span class="cinema-filter-arrow">▼</span>
+    </div>
+    
+    <div class="cinema-filter-panel" id="cinemaFilterPanel" style="display: none;">
+        <div class="cinema-filter-section">
+            <h3><%- page.l.basicFilters || 'Basic Filters' %></h3>
+            
+            <!-- Search -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.search || 'Search' %></label>
+                <input type="text" id="filterSearch" placeholder="<%- page.l.movieTitle || 'Movie title' %>" 
+                       value="<%- typeof page.query.q !== 'undefined' ? page.query.q : '' %>">
+            </div>
+            
+            <!-- Type -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.type || 'Type' %></label>
+                <select id="filterType">
+                    <option value=""><%- page.l.all || 'All' %></option>
+                    <option value="<%- config.urls.types.movie %>" <%- typeof page.query.type !== 'undefined' && page.query.type === config.urls.types.movie ? 'selected' : '' %>>
+                        <%- page.l.movie || 'Movie' %>
+                    </option>
+                    <option value="<%- config.urls.types.serial %>" <%- typeof page.query.type !== 'undefined' && page.query.type === config.urls.types.serial ? 'selected' : '' %>>
+                        <%- page.l.serial || 'Series' %>
+                    </option>
+                    <option value="<%- config.urls.types.multserial %>" <%- typeof page.query.type !== 'undefined' && page.query.type === config.urls.types.multserial ? 'selected' : '' %>>
+                        <%- page.l.multserial || 'Animated Series' %>
+                    </option>
+                    <option value="<%- config.urls.types.anime %>" <%- typeof page.query.type !== 'undefined' && page.query.type === config.urls.types.anime ? 'selected' : '' %>>
+                        <%- page.l.anime || 'Anime' %>
+                    </option>
+                    <option value="<%- config.urls.types.tv %>" <%- typeof page.query.type !== 'undefined' && page.query.type === config.urls.types.tv ? 'selected' : '' %>>
+                        <%- page.l.tvshow || 'TV Show' %>
+                    </option>
+                </select>
+            </div>
+            
+            <!-- Year Range -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.year || 'Year' %></label>
+                <div class="cinema-filter-range">
+                    <input type="number" id="filterYearFrom" placeholder="From" min="1900" max="<%- new Date().getFullYear() %>"
+                           value="<%- typeof page.query.year !== 'undefined' && page.query.year.indexOf('-') > -1 ? page.query.year.split('-')[0] : '' %>">
+                    <span>-</span>
+                    <input type="number" id="filterYearTo" placeholder="To" min="1900" max="<%- new Date().getFullYear() %>"
+                           value="<%- typeof page.query.year !== 'undefined' && page.query.year.indexOf('-') > -1 ? page.query.year.split('-')[1] : '' %>">
+                </div>
+            </div>
+        </div>
+        
+        <div class="cinema-filter-section">
+            <h3><%- page.l.ratings || 'Ratings' %></h3>
+            
+            <!-- Kinopoisk Rating -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.kpRating || 'Kinopoisk Rating' %></label>
+                <div class="cinema-filter-range">
+                    <input type="number" id="filterKpFrom" placeholder="0" min="0" max="10" step="0.1"
+                           value="<%- typeof page.query.kp_rating !== 'undefined' && page.query.kp_rating.indexOf('-') > -1 ? (parseFloat(page.query.kp_rating.split('-')[0]) / 10).toFixed(1) : '' %>">
+                    <span>-</span>
+                    <input type="number" id="filterKpTo" placeholder="10" min="0" max="10" step="0.1"
+                           value="<%- typeof page.query.kp_rating !== 'undefined' && page.query.kp_rating.indexOf('-') > -1 ? (parseFloat(page.query.kp_rating.split('-')[1]) / 10).toFixed(1) : '' %>">
+                </div>
+            </div>
+            
+            <!-- IMDB Rating -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.imdbRating || 'IMDB Rating' %></label>
+                <div class="cinema-filter-range">
+                    <input type="number" id="filterImdbFrom" placeholder="0" min="0" max="10" step="0.1"
+                           value="<%- typeof page.query.imdb_rating !== 'undefined' && page.query.imdb_rating.indexOf('-') > -1 ? (parseFloat(page.query.imdb_rating.split('-')[0]) / 10).toFixed(1) : '' %>">
+                    <span>-</span>
+                    <input type="number" id="filterImdbTo" placeholder="10" min="0" max="10" step="0.1"
+                           value="<%- typeof page.query.imdb_rating !== 'undefined' && page.query.imdb_rating.indexOf('-') > -1 ? (parseFloat(page.query.imdb_rating.split('-')[1]) / 10).toFixed(1) : '' %>">
+                </div>
+            </div>
+        </div>
+        
+        <div class="cinema-filter-section">
+            <h3><%- page.l.categories || 'Categories' %></h3>
+            
+            <!-- Genres -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.genres || 'Genres' %></label>
+                <div class="cinema-filter-multiselect" id="filterGenres">
+                    <div class="cinema-filter-multiselect-input" onclick="toggleMultiselect('genres')">
+                        <span id="filterGenresText"><%- page.l.selectGenres || 'Select genres' %></span>
+                        <span class="cinema-filter-arrow">▼</span>
+                    </div>
+                    <div class="cinema-filter-multiselect-options" id="filterGenresOptions" style="display: none;">
+                        <!-- Genres will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Countries -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.countries || 'Countries' %></label>
+                <div class="cinema-filter-multiselect" id="filterCountries">
+                    <div class="cinema-filter-multiselect-input" onclick="toggleMultiselect('countries')">
+                        <span id="filterCountriesText"><%- page.l.selectCountries || 'Select countries' %></span>
+                        <span class="cinema-filter-arrow">▼</span>
+                    </div>
+                    <div class="cinema-filter-multiselect-options" id="filterCountriesOptions" style="display: none;">
+                        <!-- Countries will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cinema-filter-section">
+            <h3><%- page_l.people || 'People' %></h3>
+            
+            <!-- Actors -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.actors || 'Actors' %></label>
+                <input type="text" id="filterActors" placeholder="<%- page.l.actorName || 'Actor name' %>"
+                       value="<%- typeof page.query.actor !== 'undefined' ? page.query.actor : '' %>">
+            </div>
+            
+            <!-- Directors -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.directors || 'Directors' %></label>
+                <input type="text" id="filterDirectors" placeholder="<%- page.l.directorName || 'Director name' %>"
+                       value="<%- typeof page.query.director !== 'undefined' ? page.query.director : '' %>">
+            </div>
+        </div>
+        
+        <div class="cinema-filter-section">
+            <h3><%- page.l.advanced || 'Advanced' %></h3>
+            
+            <!-- Quality -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.quality || 'Quality' %></label>
+                <select id="filterQuality">
+                    <option value=""><%- page.l.all || 'All' %></option>
+                    <option value="HDRip" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.quality'] === 'HDRip' ? 'selected' : '' %>>HDRip</option>
+                    <option value="BDRip" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.quality'] === 'BDRip' ? 'selected' : '' %>>BDRip</option>
+                    <option value="WEB-DL" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.quality'] === 'WEB-DL' ? 'selected' : '' %>>WEB-DL</option>
+                    <option value="WEBRip" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.quality'] === 'WEBRip' ? 'selected' : '' %>>WEBRip</option>
+                    <option value="HDTV" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.quality'] === 'HDTV' ? 'selected' : '' %>>HDTV</option>
+                    <option value="DVDRip" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.quality'] === 'DVDRip' ? 'selected' : '' %>>DVDRip</option>
+                </select>
+            </div>
+            
+            <!-- Translation -->
+            <div class="cinema-filter-group">
+                <label><%- page.l.translate || 'Translation' %></label>
+                <select id="filterTranslation">
+                    <option value=""><%- page.l.all || 'All' %></option>
+                    <option value="Professional" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.translate'] === 'Professional' ? 'selected' : '' %>>
+                        <%- page.l.professional || 'Professional' %>
+                    </option>
+                    <option value="Amateur" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.translate'] === 'Amateur' ? 'selected' : '' %>>
+                        <%- page.l.amateur || 'Amateur' %>
+                    </option>
+                    <option value="Author" <%- typeof page.query.custom !== 'undefined' && page.query.custom['custom.translate'] === 'Author' ? 'selected' : '' %>>
+                        <%- page.l.author || 'Author' %>
+                    </option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="cinema-filter-actions">
+            <button class="cinema-filter-btn cinema-filter-btn-primary" onclick="applyFilters()">
+                <%- page.l.applyFilters || 'Apply Filters' %>
+            </button>
+            <button class="cinema-filter-btn cinema-filter-btn-secondary" onclick="resetFilters()">
+                <%- page.l.resetFilters || 'Reset' %>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.cinema-filter-container {
+    margin: 15px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cinema-filter-toggle {
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s;
+}
+
+.cinema-filter-toggle:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.cinema-filter-panel {
+    padding: 15px;
+}
+
+.cinema-filter-section {
+    margin-bottom: 20px;
+}
+
+.cinema-filter-section h3 {
+    margin: 0 0 10px 0;
+    color: #fff;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.cinema-filter-group {
+    margin-bottom: 12px;
+}
+
+.cinema-filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.cinema-filter-group input,
+.cinema-filter-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 14px;
+}
+
+.cinema-filter-group input:focus,
+.cinema-filter-group select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.cinema-filter-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cinema-filter-range input {
+    flex: 1;
+}
+
+.cinema-filter-multiselect {
+    position: relative;
+}
+
+.cinema-filter-multiselect-input {
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cinema-filter-multiselect-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.cinema-filter-multiselect-option {
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cinema-filter-multiselect-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.cinema-filter-multiselect-option input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.cinema-filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cinema-filter-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.cinema-filter-btn-primary {
+    background: #4CAF50;
+    color: white;
+}
+
+.cinema-filter-btn-primary:hover {
+    background: #45a049;
+}
+
+.cinema-filter-btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.cinema-filter-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.cinema-filter-arrow {
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.cinema-filter-arrow.open {
+    transform: rotate(180deg);
+}
+</style>
+
+<script>
+// Global filter state
+let filterState = {
+    search: '',
+    type: '',
+    yearFrom: '',
+    yearTo: '',
+    kpFrom: '',
+    kpTo: '',
+    imdbFrom: '',
+    imdbTo: '',
+    genres: [],
+    countries: [],
+    actors: '',
+    directors: '',
+    quality: '',
+    translation: ''
+};
+
+// Toggle filter panel
+function toggleFilter() {
+    const panel = document.getElementById('cinemaFilterPanel');
+    const arrow = document.querySelector('.cinema-filter-toggle .cinema-filter-arrow');
+    
+    if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        arrow.classList.add('open');
+        loadFilterData();
+    } else {
+        panel.style.display = 'none';
+        arrow.classList.remove('open');
+    }
+}
+
+// Toggle multiselect dropdown
+function toggleMultiselect(type) {
+    const options = document.getElementById('filter' + type.charAt(0).toUpperCase() + type.slice(1) + 'Options');
+    const arrow = document.querySelector('#filter' + type.charAt(0).toUpperCase() + type.slice(1) + ' .cinema-filter-arrow');
+    
+    if (options.style.display === 'none') {
+        options.style.display = 'block';
+        arrow.classList.add('open');
+    } else {
+        options.style.display = 'none';
+        arrow.classList.remove('open');
+    }
+}
+
+// Load filter data (genres, countries)
+function loadFilterData() {
+    // Load genres
+    fetch('/api/genres')
+        .then(response => response.json())
+        .then(data => {
+            const optionsContainer = document.getElementById('filterGenresOptions');
+            optionsContainer.innerHTML = '';
+            
+            data.forEach(genre => {
+                const option = document.createElement('div');
+                option.className = 'cinema-filter-multiselect-option';
+                option.innerHTML = `
+                    <input type="checkbox" id="genre_${genre.id}" value="${genre.name}" 
+                           ${filterState.genres.includes(genre.name) ? 'checked' : ''}>
+                    <label for="genre_${genre.id}">${genre.name}</label>
+                `;
+                option.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = option.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    updateGenreSelection();
+                });
+                optionsContainer.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error loading genres:', error));
+    
+    // Load countries
+    fetch('/api/countries')
+        .then(response => response.json())
+        .then(data => {
+            const optionsContainer = document.getElementById('filterCountriesOptions');
+            optionsContainer.innerHTML = '';
+            
+            data.forEach(country => {
+                const option = document.createElement('div');
+                option.className = 'cinema-filter-multiselect-option';
+                option.innerHTML = `
+                    <input type="checkbox" id="country_${country.id}" value="${country.name}" 
+                           ${filterState.countries.includes(country.name) ? 'checked' : ''}>
+                    <label for="country_${country.id}">${country.name}</label>
+                `;
+                option.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = option.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    updateCountrySelection();
+                });
+                optionsContainer.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error loading countries:', error));
+}
+
+// Update genre selection
+function updateGenreSelection() {
+    const checkboxes = document.querySelectorAll('#filterGenresOptions input[type="checkbox"]:checked');
+    filterState.genres = Array.from(checkboxes).map(cb => cb.value);
+    
+    const textElement = document.getElementById('filterGenresText');
+    if (filterState.genres.length === 0) {
+        textElement.textContent = '<%- page.l.selectGenres || 'Select genres' %>';
+    } else if (filterState.genres.length <= 2) {
+        textElement.textContent = filterState.genres.join(', ');
+    } else {
+        textElement.textContent = filterState.genres.length + ' <%- page.l.selected || 'selected' %>';
+    }
+}
+
+// Update country selection
+function updateCountrySelection() {
+    const checkboxes = document.querySelectorAll('#filterCountriesOptions input[type="checkbox"]:checked');
+    filterState.countries = Array.from(checkboxes).map(cb => cb.value);
+    
+    const textElement = document.getElementById('filterCountriesText');
+    if (filterState.countries.length === 0) {
+        textElement.textContent = '<%- page.l.selectCountries || 'Select countries' %>';
+    } else if (filterState.countries.length <= 2) {
+        textElement.textContent = filterState.countries.join(', ');
+    } else {
+        textElement.textContent = filterState.countries.length + ' <%- page.l.selected || 'selected' %>';
+    }
+}
+
+// Apply filters
+function applyFilters() {
+    // Update filter state from inputs
+    filterState.search = document.getElementById('filterSearch').value;
+    filterState.type = document.getElementById('filterType').value;
+    filterState.yearFrom = document.getElementById('filterYearFrom').value;
+    filterState.yearTo = document.getElementById('filterYearTo').value;
+    filterState.kpFrom = document.getElementById('filterKpFrom').value;
+    filterState.kpTo = document.getElementById('filterKpTo').value;
+    filterState.imdbFrom = document.getElementById('filterImdbFrom').value;
+    filterState.imdbTo = document.getElementById('filterImdbTo').value;
+    filterState.actors = document.getElementById('filterActors').value;
+    filterState.directors = document.getElementById('filterDirectors').value;
+    filterState.quality = document.getElementById('filterQuality').value;
+    filterState.translation = document.getElementById('filterTranslation').value;
+    
+    // Build URL parameters
+    const params = new URLSearchParams();
+    
+    if (filterState.search) params.set('q', filterState.search);
+    if (filterState.type) params.set('type', filterState.type);
+    if (filterState.actors) params.set('actor', filterState.actors);
+    if (filterState.directors) params.set('director', filterState.directors);
+    if (filterState.quality) params.set('custom.quality', filterState.quality);
+    if (filterState.translation) params.set('custom.translate', filterState.translation);
+    
+    // Year range
+    if (filterState.yearFrom && filterState.yearTo) {
+        params.set('year', filterState.yearFrom + '-' + filterState.yearTo);
+    } else if (filterState.yearFrom) {
+        params.set('year', filterState.yearFrom + '-');
+    } else if (filterState.yearTo) {
+        params.set('year', '-' + filterState.yearTo);
+    }
+    
+    // Kinopoisk rating range
+    if (filterState.kpFrom && filterState.kpTo) {
+        params.set('kp_rating', Math.round(filterState.kpFrom * 10) + '-' + Math.round(filterState.kpTo * 10));
+    } else if (filterState.kpFrom) {
+        params.set('kp_rating', Math.round(filterState.kpFrom * 10) + '-');
+    } else if (filterState.kpTo) {
+        params.set('kp_rating', '-' + Math.round(filterState.kpTo * 10));
+    }
+    
+    // IMDB rating range
+    if (filterState.imdbFrom && filterState.imdbTo) {
+        params.set('imdb_rating', Math.round(filterState.imdbFrom * 10) + '-' + Math.round(filterState.imdbTo * 10));
+    } else if (filterState.imdbFrom) {
+        params.set('imdb_rating', Math.round(filterState.imdbFrom * 10) + '-');
+    } else if (filterState.imdbTo) {
+        params.set('imdb_rating', '-' + Math.round(filterState.imdbTo * 10));
+    }
+    
+    // Genres (multiple)
+    filterState.genres.forEach(genre => {
+        params.append('genre', genre);
+    });
+    
+    // Countries (multiple)
+    filterState.countries.forEach(country => {
+        params.append('country', country);
+    });
+    
+    // Redirect to filtered results
+    const currentUrl = window.location.pathname;
+    const newUrl = params.toString() ? currentUrl + '?' + params.toString() : currentUrl;
+    
+    window.location.href = newUrl;
+}
+
+// Reset filters
+function resetFilters() {
+    // Reset all form inputs
+    document.getElementById('filterSearch').value = '';
+    document.getElementById('filterType').value = '';
+    document.getElementById('filterYearFrom').value = '';
+    document.getElementById('filterYearTo').value = '';
+    document.getElementById('filterKpFrom').value = '';
+    document.getElementById('filterKpTo').value = '';
+    document.getElementById('filterImdbFrom').value = '';
+    document.getElementById('filterImdbTo').value = '';
+    document.getElementById('filterActors').value = '';
+    document.getElementById('filterDirectors').value = '';
+    document.getElementById('filterQuality').value = '';
+    document.getElementById('filterTranslation').value = '';
+    
+    // Reset checkboxes
+    document.querySelectorAll('#filterGenresOptions input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('#filterCountriesOptions input[type="checkbox"]').forEach(cb => cb.checked = false);
+    
+    // Reset filter state
+    filterState = {
+        search: '',
+        type: '',
+        yearFrom: '',
+        yearTo: '',
+        kpFrom: '',
+        kpTo: '',
+        imdbFrom: '',
+        imdbTo: '',
+        genres: [],
+        countries: [],
+        actors: '',
+        directors: '',
+        quality: '',
+        translation: ''
+    };
+    
+    // Update display text
+    document.getElementById('filterGenresText').textContent = '<%- page.l.selectGenres || 'Select genres' %>';
+    document.getElementById('filterCountriesText').textContent = '<%- page.l.selectCountries || 'Select countries' %>';
+    
+    // Redirect to base URL
+    window.location.href = window.location.pathname;
+}
+
+// Initialize filter state from URL parameters
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Set initial values from URL
+    if (params.has('q')) document.getElementById('filterSearch').value = params.get('q');
+    if (params.has('type')) document.getElementById('filterType').value = params.get('type');
+    if (params.has('actor')) document.getElementById('filterActors').value = params.get('actor');
+    if (params.has('director')) document.getElementById('filterDirectors').value = params.get('director');
+    if (params.has('custom.quality')) document.getElementById('filterQuality').value = params.get('custom.quality');
+    if (params.has('custom.translate')) document.getElementById('filterTranslation').value = params.get('custom.translate');
+    
+    // Year range
+    const yearRange = params.get('year');
+    if (yearRange) {
+        const years = yearRange.split('-');
+        if (years[0]) document.getElementById('filterYearFrom').value = years[0];
+        if (years[1]) document.getElementById('filterYearTo').value = years[1];
+    }
+    
+    // Kinopoisk rating range
+    const kpRange = params.get('kp_rating');
+    if (kpRange) {
+        const kpRatings = kpRange.split('-');
+        if (kpRatings[0]) document.getElementById('filterKpFrom').value = (parseFloat(kpRatings[0]) / 10).toFixed(1);
+        if (kpRatings[1]) document.getElementById('filterKpTo').value = (parseFloat(kpRatings[1]) / 10).toFixed(1);
+    }
+    
+    // IMDB rating range
+    const imdbRange = params.get('imdb_rating');
+    if (imdbRange) {
+        const imdbRatings = imdbRange.split('-');
+        if (imdbRatings[0]) document.getElementById('filterImdbFrom').value = (parseFloat(imdbRatings[0]) / 10).toFixed(1);
+        if (imdbRatings[1]) document.getElementById('filterImdbTo').value = (parseFloat(imdbRatings[1]) / 10).toFixed(1);
+    }
+    
+    // Update filter state
+    filterState.search = params.get('q') || '';
+    filterState.type = params.get('type') || '';
+    filterState.actors = params.get('actor') || '';
+    filterState.directors = params.get('director') || '';
+    filterState.quality = params.get('custom.quality') || '';
+    filterState.translation = params.get('custom.translate') || '';
+    
+    // Genres and countries will be loaded when filter is opened
+});
+
+// Close multiselect when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.cinema-filter-multiselect')) {
+        document.querySelectorAll('.cinema-filter-multiselect-options').forEach(options => {
+            options.style.display = 'none';
+        });
+        document.querySelectorAll('.cinema-filter-multiselect .cinema-filter-arrow').forEach(arrow => {
+            arrow.classList.remove('open');
+        });
+    }
+});
+</script>

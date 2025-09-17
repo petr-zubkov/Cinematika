@@ -20,6 +20,8 @@
 
 <div class="clear"></div>
 
+<%- include('filter.ejs'); -%>
+
 <form action="<%- page.protocol %><%- page.domain %>/<%- page.urls.search %>" method="get">
     <input class="submit" value="<%- page.l.menu %>" type="button" style="left: 10px; right: auto" onclick="openNav()">
     <input type="text" class="text" name="q" value="" placeholder="<%- page.l.movieTitle %> ..."
