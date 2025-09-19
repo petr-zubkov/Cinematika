@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# CinemaPress Quick Install - Установка одной командой
+# Cinematika Quick Install - Установка одной командой
 # Аналог: bash <(wget git.io/JGKNq -qO-)
-# Использование: bash cinemapress-quick-install.sh [домен] [язык] [тема] [пароль]
+# Использование: bash Cinematika-quick-install.sh [домен] [язык] [тема] [пароль]
 
 set -e
 
@@ -29,7 +29,7 @@ log_step() {
 DOMAIN=${1:-}
 LANG=${2:-en}
 THEME=${3:-default}
-PASSWORD=${4:-$(openssl rand -base64 12 2>/dev/null || echo "cinemapress123")}
+PASSWORD=${4:-$(openssl rand -base64 12 2>/dev/null || echo "Cinematika123")}
 
 if [ -z "${DOMAIN}" ]; then
     log_error "Domain is required!"
@@ -44,7 +44,7 @@ if [[ ! "${DOMAIN}" =~ ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$ 
     exit 1
 fi
 
-log_info "Starting CinemaPress installation for ${DOMAIN}"
+log_info "Starting Cinematika installation for ${DOMAIN}"
 log_info "Language: ${LANG}"
 log_info "Theme: ${THEME}"
 log_info "Password: ${PASSWORD}"
@@ -108,9 +108,9 @@ sudo mkdir -p "${PROJECT_DIR}"
 sudo chown -R $USER:$USER "${PROJECT_DIR}"
 cd "${PROJECT_DIR}"
 
-# Шаг 6: Клонирование CinemaPress
-log_step "6. Cloning CinemaPress repository..."
-git clone https://github.com/CinemaPress/CinemaPress.git . 2>/dev/null || {
+# Шаг 6: Клонирование Cinematika
+log_step "6. Cloning Cinematika repository..."
+git clone https://github.com/Cinematika/Cinematika.git . 2>/dev/null || {
     log_error "Failed to clone from GitHub, trying alternative..."
     # Если не удалось клонировать, создаем базовую структуру
     mkdir -p config data logs ssl
@@ -153,7 +153,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - cinemapress_network
+      - Cinematika_network
 
   nginx:
     image: nginx:alpine
@@ -171,7 +171,7 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - cinemapress_network
+      - Cinematika_network
 
   database:
     image: mongo:latest
@@ -180,10 +180,10 @@ services:
     volumes:
       - ./data/mongo:/data/db
     networks:
-      - cinemapress_network
+      - Cinematika_network
 
 networks:
-  cinemapress_network:
+  Cinematika_network:
     driver: bridge
 EOF
 
@@ -251,7 +251,7 @@ mongoose.connect('mongodb://database:27017/cinema', {
 // Routes
 app.get('/', (req, res) => {
     res.render('index', {
-        title: 'CinemaPress',
+        title: 'Cinematika',
         domain: DOMAIN,
         language: LANGUAGE,
         theme: THEME
@@ -260,7 +260,7 @@ app.get('/', (req, res) => {
 
 app.get('/admin', (req, res) => {
     res.render('admin', {
-        title: 'Admin Panel - CinemaPress',
+        title: 'Admin Panel - Cinematika',
         domain: DOMAIN
     });
 });
@@ -319,7 +319,7 @@ fs.writeFileSync('views/index.ejs', `
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎬 CinemaPress</h1>
+            <h1>🎬 Cinematika</h1>
             <p>Welcome to your movie website!</p>
         </div>
         
@@ -345,7 +345,7 @@ fs.writeFileSync('views/admin.ejs', `
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel - CinemaPress</title>
+    <title>Admin Panel - Cinematika</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
         .container { max-width: 1000px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; }
@@ -360,7 +360,7 @@ fs.writeFileSync('views/admin.ejs', `
     <div class="container">
         <div class="header">
             <h1>🔧 Admin Panel</h1>
-            <p>Manage your CinemaPress website</p>
+            <p>Manage your Cinematika website</p>
         </div>
         
         <div class="menu">
@@ -392,7 +392,7 @@ fs.writeFileSync('views/admin.ejs', `
 
 // Create package.json
 const packageJson = {
-    name: "cinemapress-site",
+    name: "Cinematika-site",
     version: "1.0.0",
     main: "server.js",
     scripts: {
@@ -408,7 +408,7 @@ const packageJson = {
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(\`🚀 CinemaPress server running on port \${PORT}\`);
+    console.log(\`🚀 Cinematika server running on port \${PORT}\`);
     console.log(\`🌐 Website: http://\${DOMAIN}\`);
     console.log(\`🔧 Admin: http://\${DOMAIN}/admin\`);
 });
@@ -438,19 +438,19 @@ log_step "15. Setting up autostart..."
 log_step "16. Creating management script..."
 cat > manage.sh << EOF
 #!/bin/bash
-# CinemaPress Management Script
+# Cinematika Management Script
 
 case "\${1:-}" in
     "start")
-        echo "Starting CinemaPress..."
+        echo "Starting Cinematika..."
         sudo docker-compose up -d
         ;;
     "stop")
-        echo "Stopping CinemaPress..."
+        echo "Stopping Cinematika..."
         sudo docker-compose down
         ;;
     "restart")
-        echo "Restarting CinemaPress..."
+        echo "Restarting Cinematika..."
         sudo docker-compose restart
         ;;
     "logs")
@@ -462,7 +462,7 @@ case "\${1:-}" in
         sudo docker-compose ps
         ;;
     "update")
-        echo "Updating CinemaPress..."
+        echo "Updating Cinematika..."
         git pull
         sudo docker-compose down
         sudo docker-compose up -d --build
@@ -520,4 +520,4 @@ log_info "📞 Support:"
 echo "   Check logs: ./manage.sh logs"
 echo "   View status: ./manage.sh status"
 echo ""
-log_info "✅ CinemaPress installation completed successfully!"
+log_info "✅ Cinematika installation completed successfully!"
